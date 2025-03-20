@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h3>{{ song.name }}</h3>
+    <p><strong>Artist:</strong> {{ song.artist.name }}</p>
+    <p><strong>Album:</strong> {{ song.album.name }}</p>
+    <p><strong>Genre:</strong> {{ song.genre.name }}</p>
+
+    <div class="mt-4">
+        {% if song.song_url %}
+            <audio controls>
+                <source src="{{ song.song_url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        {% elif song.song_file %}
+            <audio controls>
+                <source src="{{ song.song_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        {% else %}
+            <p class="text-danger">No audio file or URL is available for this song.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

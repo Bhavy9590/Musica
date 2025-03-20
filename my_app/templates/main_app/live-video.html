@@ -1,0 +1,139 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+{% block content %}
+
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="row">
+        <!-- Update Live Video Form -->
+        <div class="col-xxl">
+            <div class="card mb-4">
+                <div class="card-header align-items-center justify-content-between">
+                    <h5 class="mb-0">Update Live Video</h5>
+                    <small class="text-muted">You can update the live video details below</small>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Display Django Messages (Alerts) -->
+                        {% if messages %}
+                            <div class="mt-3">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Display Form Errors -->
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong> Please correct the errors below.
+                                <ul>
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li>{{ field.label }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- Live Video Image Field -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="livevideo_image">Live Video Image</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <input type="file" class="form-control" name="livevideo_image" id="livevideo_image">
+                                </div>
+                                <br>
+                                {% if videos_image %}
+                                    <div>
+                                        <img src="{{ videos_image.url }}" class="img-responsive"  
+                                            style="width: 150px; border-radius: 10px;"
+                                            onerror="this.onerror=null;this.src='{% static 'img/placeholder.png' %}';">
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <img src="{% static 'img/placeholder.png' %}" class="img-responsive" 
+                                            style="width: 150px; border-radius: 10px;">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Live Video Name Field -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="livevideo_name">Live Video Name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <input type="text" id="livevideo_name" name="livevideo_name" class="form-control"
+                                           placeholder="Enter Live Video Name" value="{{ videos_name | default:'' }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Video Link Field -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="livevideo_link">Live Video Link</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <input type="url" id="livevideo_link" name="livevideo_link" class="form-control"
+                                           placeholder="Enter Live Video Link" value="{{ videos_link | default:'' }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Video Artist Name Field -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="livevideo_artist_name">Live Video Artist Name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <input type="text" id="livevideo_artist_name" name="livevideo_artist_name" class="form-control"
+                                           placeholder="Enter Live Video Artist Name" value="{{ videos_artist_name | default:'' }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Video Description Field -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="livevideo_description">Description</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <textarea class="form-control" rows="5" name="videos_description" 
+                                              placeholder="Live Video Description">{{ videos_description | default:'' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary me-2">Update</button>
+                                <a href="{% url 'live-video' %}" class="btn btn-secondary me-2">Clear</a>
+                                <button type="reset" class="btn btn-danger">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,116 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!-- Basic Layout & Basic with Icons -->
+    <div class="row">
+        <!-- Basic Layout -->
+        <div class="col-xxl">
+            <div class="card mb-6">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Edit App Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'edit_share_my_app' data.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- App Name Field -->
+                        <div class="mb-3 row">
+                            <label for="shareapp_name" class="col-sm-2 col-form-label">App Name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bx bx-text"></i>
+                                    </span>
+                                    {{ form.shareapp_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Android Link Field -->
+                        <div class="mb-3 row">
+                            <label for="shareapp_andriod_link" class="col-sm-2 col-form-label">Android Link</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bx bx-link"></i>
+                                    </span>
+                                    {{ form.shareapp_andriod_link }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- iOS Link Field -->
+                        <div class="mb-3 row">
+                            <label for="shareapp_ios_link" class="col-sm-2 col-form-label">iOS Link</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bx bx-link"></i>
+                                    </span>
+                                    {{ form.shareapp_ios_link }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-pencil me-1"></i>Edit App Information
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Success Modal -->
+                        {% if success_message %}
+                        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ success_message }}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                            successModal.show();
+                        </script>
+                        {% endif %}
+
+                        <!-- Error Handling -->
+                        {% if errors %}
+                        <div class="alert alert-danger mt-3 text-center">
+                            {{ errors }}
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

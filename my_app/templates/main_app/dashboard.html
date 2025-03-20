@@ -1,0 +1,421 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block breadcrumbs %}{% endblock breadcrumbs %} {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
+<style>
+{% comment %} .pagination {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.pagination .page-item .page-link {
+  border-radius: 5px;
+  color: #007bff;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+  border: none;
+} {% endcomment %}
+</style>
+<form id="artistForm" action='{% url "dashboard" %}' method="POST">
+  {% csrf_token %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row g-6 mb-6">
+    <div class="col-md-6 col-xl-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <h5 class="card-title text-white">Song Category  <i class="bx bx-category"></i></h5>
+          <p class="card-text">0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card bg-secondary text-white">
+        <div class="card-body">
+          <h5 class="card-title text-white">Subscribers <i class="bx bx-user"></i></h5>
+          <p class="card-text">0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <h5 class="card-title text-white">Contact Requests<i class="bx bx-phone"></i></h5>
+          <p class="card-text">0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card bg-danger text-white">
+        <div class="card-body">
+          <h5 class="card-title text-white">
+            <a href="{% url 'songs' %}" class="text-white text-decoration-none">
+              Songs <i class="bx bx-music"></i>
+            </a>
+          </h5>
+          <p class="card-text">{{ song_count }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+    <!-- Basic Bootstrap Table -->
+    <!-- Striped Rows -->
+     {{songs.id}}
+    <div class="card">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="card-header fs-5">Songs</h5>
+          <div class="d-flex justify-content-between ">
+            <button
+              type="button"
+              class="btn btn-primary fs-6"
+              data-bs-toggle="modal" data-bs-target="#largeModal">
+              Assign Song(s)
+            </button>
+            &nbsp;&nbsp;
+            <!-- Modal 1-->
+            <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel3 dropdownMenuButton">Assign Songs</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                    
+                    <div class="modal-body">
+                      
+                      <div id="artistDropdown" class="dropdown">
+                        <button
+                          class="btn btn-secondary dropdown-toggle w-100"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          Select Artists
+                        </button>
+                        <ul class="dropdown-menu w-100 p-3  " aria-labelledby="dropdownMenuButton">
+                          {% for artist in artists %}
+                            <li>
+                              <div class="form-check" id="form-check-{{ artist.id }}">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  name="artists"
+                                  value="{{ artist.id }}"
+                                  id="artist{{ artist.id }}">
+                                {% comment %} <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                                  {{ artist.name }}
+                                </label> {% endcomment %}
+                                <option>{{artist.name}}</option>
+                              </div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                        <br>
+
+                      <div id="albumDropdown" class="dropdown">
+                        <button
+                          class="btn btn-secondary dropdown-toggle w-100"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          Select Albums
+                        </button>
+                        <ul class="dropdown-menu w-100 p-3  " aria-labelledby="dropdownMenuButton">
+                          {% for album in albums %}
+                            <li>
+                              <div class="form-check" id="form-check-{{ album.id }}">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  name="albums"
+                                  value="{{ album.id }}"
+                                  id="artist{{ album.id }}">
+                                {% comment %} <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                                  {{ artist.name }}
+                                </label> {% endcomment %}
+                                <option>{{album.name}}</option>
+                              </div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <br>
+                      <div id="albumDropdown" class="dropdown">
+                        <button
+                          class="btn btn-secondary dropdown-toggle w-100"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          Select Genres
+                        </button>
+                        <ul class="dropdown-menu w-100 p-3  " aria-labelledby="dropdownMenuButton">
+                          {% for genre in genres %}
+                            <li>
+                              <div class="form-check" id="form-check-{{ album.id }}">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  name="genres"
+                                  value="{{ genre.id }}"
+                                  id="{{ genre.id }}">
+                                {% comment %} <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                                  {{ artist.name }}
+                                </label> {% endcomment %}
+                                <option>{{genre.name}}</option>
+                              </div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <br>
+                      <div id="artistDropdown" class="dropdown">
+                        <button
+                          class="btn btn-secondary dropdown-toggle w-100"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          Select Mixes
+                        </button>
+                        <ul class="dropdown-menu w-100 p-3  " aria-labelledby="dropdownMenuButton">
+                          {% for mix in mixes %}
+                            <li>
+                              <div class="form-check" id="form-check-{{ mix.id }}">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  name="mixes"
+                                  value="{{ mix.id }}"
+                                  id="artist{{ mix.id }}">
+                                {% comment %} <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                                  {{ artist.name }}
+                                </label> {% endcomment %}
+                                <option>{{mix.name}}</option>
+                              </div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                        <br>
+                        <div class="form-check" id="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="assign_trending"
+                            value="{{True}}"
+                            id="artist{{ mix.id }}">
+                          <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                            Assign Tracks to Trending
+                          </label> 
+                        
+                        </div>
+                        
+                        <div class="form-check" id="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="recommended_tracks"
+                            value="{{True}}"
+                            id="artist{{ mix.id }}">
+                          <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                            Assign Tracks to Recommended
+                          </label> 
+                        
+                        </div>
+
+
+                    </div>
+            
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      &nbsp; <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+
+            <!-- Modal 2-->
+            
+          
+        
+
+        <div>
+          <a href="{% url 'add_song' %}" class="btn btn-primary fs-6" style="margin-right: 10px">
+            <i class="mdi mdi-plus mdi-24px me-1 icon-animate-plus"></i>
+            Add Song
+          </a>
+        </div>
+      </div>
+      </div>
+      <div class="table-responsive text-nowrap">
+        <table class="table table-striped">
+          <thead class="table-dark">
+            <tr class="text-center">
+              <th>select song</th>
+              <th scope="col">ID</th>
+              <th scope="col">Image</th>
+              <th scope="col">Name</th>
+              <th scope="col">Duration</th>
+              {% comment %} <th scope="col">Album</th>
+              <th scope="col">Genre</th>
+              <th scope="col">Song URL</th> {% endcomment %}
+              <th scope="col">Play</th>
+              {% comment %} <th scope="col">View Songs</th> {% endcomment %}
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for song in songs %}
+            <tr class="text-center">
+              <td><input
+                class="form-check-input"
+                type="checkbox"
+                name="songs"
+                value="{{ song.id }}"
+                id="song{{ song.id }}"></td>
+              <td>{{ song.id }}</td>
+              <td class="text-center align-items-center">
+                {% if song.image %}
+                <img class="img-fluid " style="width: 50px;" src="{{ song.image.url }}" alt="Song Image">
+                {% else %}
+                N/A
+                {% endif %}
+              </td>
+              <td>{{ song.name }}</td>
+              <td>{{ song.duration }}</td>
+              
+              <td>
+                {% if song.song_file %}
+                <a href="{{ song.song_file.url }}" target="_blank" class="btn btn-primary fs-6"><i class="bx bx-play me-1"></i>Play</a>
+                {% else %}
+                <a href="{{song.song_url}}" class="btn btn-primary fs-6"><i class="bx bx-play me-1"></i>Play</a>
+                {% endif %}
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item text-warning" href="">
+                      <i class="bx bx-edit-alt me-1"></i> Edit
+                    </a>
+                    <a
+                      class="dropdown-item text-danger"
+                      href=""
+                      onclick="return confirm('Are you sure you want to delete this music?');"
+                    >
+                      <i class="bx bx-trash me-1"></i> Delete
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="10" class="text-center">No songs available.</td>
+            </tr>
+            {% endfor %}
+          </tbody>          
+        </table>
+        <div class="d-flex justify-content-center mt-3">
+          <nav>
+            <ul class="pagination pagination-sm">
+              {% if songs.has_previous %}
+              {% comment %} <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+              </li> {% endcomment %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ songs.previous_page_number }}">Previous</a>
+              </li>
+              {% endif %}
+        
+              {% for num in songs.paginator.page_range %}
+              {% if songs.number == num %}
+              <li class="page-item active">
+                <a class="page-link" href="#">{{ num }}</a>
+              </li>
+              {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endif %}
+              {% endfor %}
+        
+              {% if songs.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ songs.next_page_number }}">Next</a>
+              </li>
+              {% comment %} <li class="page-item">
+                <a class="page-link" href="?page={{ songs.paginator.num_pages }}">Last &raquo;</a>
+              </li> {% endcomment %}
+              {% endif %}
+            </ul>
+          </nav>
+          &nbsp;&nbsp;
+        </div>
+        
+      </div>
+    </div>
+  </form>
+    <!--/ Striped Rows -->
+    <!--/ Responsive Table -->
+  </div>
+  {% endblock content %}
+  <script>
+    
+
+
+
+
+
+    // Select elements
+    const dropdownButton = document.getElementById('dropdownMenuButton');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const customDropdown = document.getElementById('artistDropdown');
+  
+    // Function to toggle dropdown visibility
+    function toggleDropdown() {
+      dropdownMenu.classList.toggle('show');
+      console.log("show")
+    }
+  
+    // Open dropdown when the button is clicked
+    dropdownButton.addEventListener('click', function(event) {
+      event.stopPropagation(); // Prevent closing on button click
+      toggleDropdown(); // Toggle the dropdown visibility
+      console.log(".addEventListener")
+    });
+  
+    // Prevent dropdown from closing when clicking inside it
+    dropdownMenu.addEventListener('click', function(event) {
+      event.stopPropagation(); // Prevent closing dropdown when clicking inside
+      console.log("event.stopPropagation")
+    });
+  
+    // Close the dropdown if clicking outside of the dropdown
+    document.addEventListener('click', function(event) {
+      if (!customDropdown.contains(event.target)) {
+        dropdownMenu.classList.remove('show'); // Close the dropdown
+        console.log("again show")
+      }
+    });
+  </script>
+  
+</div>

@@ -1,0 +1,76 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!-- Basic Layout -->
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-6">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Terms of Service</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'privacy_policy'%}" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Name Field -->
+                        <div class="row mb-3">
+                            <label for="" class="col-sm-2 col-form-label">Title</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    {{ form.title }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Field -->
+                        <div class="row mb-3">
+                            <label for="" class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    {{ form.description }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-pencil-plus mdi-24px me-1 icon-animate-plus"></i>
+                                    Edit Terms Of Service
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Error Messages -->
+                        {% if errors %}
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger text-center">
+                                    {{ errors }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,82 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-4">  <!-- Reduced margin for a cleaner layout -->
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Add Social Media</h5>  <!-- Added heading for clarity -->
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'add-social-media' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Social Media Name -->
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label" for="id_social_media_name">Social Media Name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bx bx-user"></i>
+                                    </span>
+                                    {{ form.social_media_name }}
+                                </div>
+                                {% if form.social_media_name.errors %}
+                                    <small class="text-danger">{{ form.social_media_name.errors }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Social Media Link -->
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label" for="id_social_media_link">Social Media Link</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bx bxs-image"></i>
+                                    </span>
+                                    {{ form.social_media_link }}
+                                </div>
+                                {% if form.social_media_link.errors %}
+                                    <small class="text-danger">{{ form.social_media_link.errors }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-facebook-plus mdi-24px me-1 icon-animate-plus"></i> Add Social Media
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Display Form Errors -->
+                        {% if errors %}
+                            <div class="alert alert-danger text-center mt-3">
+                                {{ errors }}
+                            </div>  
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

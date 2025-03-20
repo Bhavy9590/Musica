@@ -1,0 +1,81 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!-- Basic Layout & Basic with Icons -->
+    <div class="row">
+        <!-- Basic Layout -->
+        <div class="col-xxl">
+            <div class="card mb-6">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Edit Social Media</h5>
+                </div>
+                <div class="card-body"> 
+                    <!-- Form -->
+                    <form method="post" action="{% url 'edit-social-media' socialmedia.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Social Media Name Field -->
+                        <div class="row mb-6">
+                            <label class="col-sm-2 col-form-label" for="social_media_name">Social Media Name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span id="username-icon" class="input-group-text">
+                                        <i class="bx bx-user"></i>
+                                    </span>
+                                    {{ form.social_media_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Link Field -->
+                        <div class="row mb-6">
+                            <label class="col-sm-2 col-form-label" for="social_media_link">Social Media Link</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span id="link-icon" class="input-group-text">
+                                        <i class="bx bx-link"></i>
+                                    </span>
+                                    {{ form.social_media_link }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-pencil mdi-24px me-1 icon-animate-pencil"></i>Edit Social Media
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Error Handling -->
+                        {% if errors %}
+                            <br>
+                            <div class="alert alert-danger text-center">
+                                {{ errors }}
+                            </div>  
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

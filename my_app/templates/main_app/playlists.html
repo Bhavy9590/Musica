@@ -1,0 +1,118 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block breadcrumbs %}{% endblock breadcrumbs %} {% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-header fs-5">Artists</h5>
+          <div>
+            <a href="{% url 'add_artist' %}" class="btn btn-primary fs-6" style="margin-right: 10px"
+              ><i class="mdi mdi-plus mdi-24px me-1 icon-animate-plus"></i>Add
+              Playlist</a
+            >
+          </div>
+        </div>
+        <div class="table-responsive text-nowrap">
+          <table class="table table-striped table-responsive">
+            <thead class="table-dark table-responsive">
+              <tr>
+                <th scope="col">ID</th>
+                <th>Name</th>
+                <th scope="col">Image</th>
+                <th>created at</th>
+                <th>updated at</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 table-responsive">
+              {% if playlists %}
+                {% for playlist in playlists %}
+              <tr>
+                <td>{{playlist.id}}</td>  
+                <td>{{playlist.name}}</td>
+                <td><img class="img-fluid img-thumbnail" style="width: 50px;" src="{{playlist.image.url}}" alt=""></td>
+                <td>{{playlist.created_at}}</td>
+                <td>{{playlist.updated_at}}</td>
+                <td>
+                  <div class="dropdown">
+                    <button
+                      type="button"
+                      class="btn p-0 dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown"
+                    >
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item text-warning" href="{% url 'edit_artist' playlist.id %}"
+                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                      >
+                      <a
+                        class="dropdown-item text-danger"
+                        href="{% url 'delete_artist' playlist.id %}"
+                        onclick="return confirm('Are you sure you want to delete this artist?');"
+                        ><i class="bx bx-trash me-1"></i> Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td colspan="6" class="text-center">No artists found</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          <!-- Styled Pagination Controls -->
+          {% comment %} <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              {% if admin_list.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                  <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="?page={{ admin_list.previous_page_number }}"
+                  aria-label="Previous"
+                >
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% endif %} {% for num in admin_list.paginator.page_range %} {% if
+              admin_list.number == num %}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ num }}</span>
+              </li>
+              {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endif %} {% endfor %} {% if admin_list.has_next %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="?page={{ admin_list.next_page_number }}"
+                  aria-label="Next"
+                >
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="?page={{ admin_list.paginator.num_pages }}"
+                  aria-label="Last"
+                >
+                  <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav> {% endcomment %}
+        </div>
+      </div>
+      
+</div>
+{% endblock content %}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free" data-style="light">
+  <head>
+    {% include 'includes/head.html' %}
+  </head>
+  <body>
+    <!-- Content -->
+    <div class="container-xxl">
+      <div class="col-md-4 authentication-wrapper authentication-basic container-p-y" style="margin: 0px auto;">
+        <div class="authentication-inner">
+          <!-- Login -->
+          <div class="card px-sm-6 px-0">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="{% url 'login' %}" class="app-brand-link gap-2">
+                  <span class="app-brand-logo demo">
+                    <!-- SVG Logo Here -->
+                  </span>
+                  <span class="app-brand-text demo text-heading fw-bold">Musica</span>
+                </a>
+              </div>
+              <br>
+              <!-- /Logo -->
+              <h4 class="mb-1">Welcome to Musica! 👋</h4>
+              <p class="mb-6">Please sign in to your account and start the adventure</p>
+
+              <form class="mb-6" action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-6">
+                  <label for="email" class="form-label"><strong>Email or Username</strong></label>
+                  <input type="text" class="form-control" id="username_or_email" name="username_or_email" placeholder="Enter your email or username" autofocus />
+                </div>
+                <div class="mb-6 form-password-toggle">
+                  <label class="form-label" for="password"><strong>Password</strong></label>
+                  <div class="input-group input-group-merge">
+                    <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                    <span class="input-group-text cursor-pointer" onclick="togglePassword()"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+                <div class="mb-8">
+                  <div class="d-flex justify-content-between mt-8">
+                    <a href="{% url 'login' %}"><span>Forgot Password?</span></a>
+                  </div>
+                </div>
+                <div class="mb-6">
+                  <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                </div>
+
+                {% if errors %}
+                  <div class="text-center text-danger">
+                    {% for error in errors %}
+                      <p><strong>{{ error }}</strong></p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </form>
+
+              <p class="text-center">
+                <span>made with ❤️ by </span>
+                <a href="https://stegowl.in/" target="_blank" class="footer-link">Stegowl Media LLP</a>
+              </p>
+            </div>
+          </div>
+          <!-- /Login -->
+        </div>
+      </div>
+    </div>
+    <!-- / Content -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    {% include 'includes/scripts.html' %} 
+  </body>
+</html>

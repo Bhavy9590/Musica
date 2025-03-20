@@ -1,0 +1,361 @@
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa; /* Light gray background */
+            color: #333333; /* Dark gray text */
+        }
+
+        .email-wrapper {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff; /* White card background */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            overflow: hidden;
+        }
+
+        .email-header {
+            background-color: #797979; /* Green header */
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .email-header img {
+            max-width: 80px;
+            margin-bottom: 10px;
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-body h3 {
+            color: #7e7e7e; /* Match header color */
+            margin-top: 0;
+        }
+
+        .email-body p {
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .email-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .email-body table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .email-footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #f1f1f1;
+            font-size: 12px;
+            color: #777777;
+        }
+
+        .email-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .email-wrapper {
+                margin: 10px;
+            }
+
+            .email-header h1 {
+                font-size: 20px;
+            }
+
+            .email-body h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-wrapper">
+        <!-- Email Header -->
+        <div class="email-header">
+            <img src="{{ logo_url }}" alt="Company Logo">
+            <h1>Welcome to {{ app_name }}</h1>
+        </div>
+
+        <!-- Email Body -->
+        <div class="email-body">
+            <h3>Hello {{ firstname }},</h3>
+            <p>
+                We are excited to welcome you to <strong>{{ app_name }}</strong>. Your {{ create_or_reset }} was
+                <strong>successful</strong>. Below are your registration details:
+            </p>
+
+            <!-- User Details Table -->
+            <table>
+                <tr>
+                    <td><strong>Username:</strong></td>
+                    <td>{{ username }}</td>
+                </tr>
+                <tr>
+                    <td><strong>First Name:</strong></td>
+                    <td>{{ first_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Last Name:</strong></td>
+                    <td>{{ last_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>{{ email }}</td>
+                </tr>
+            </table>
+
+            <p>If you have any questions, feel free to reach out to our support team at <a href="mailto:harsh.stegowl@gmail.com">harsh.stegowl@gmail.com</a>.</p>
+            <p>Thank you for choosing {{ app_name }}!</p>
+        </div>
+
+        <!-- Email Footer -->
+        <div class="email-footer">
+            <p>&copy; {{ current_year }} {{ app_name }}. All rights reserved.</p>
+            <p>
+                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html> {% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to {{ app_name }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            color: #333333;
+        }
+
+        .email-wrapper {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, #4cafef, #007bff);
+            padding: 25px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .email-header img {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .divider {
+            width: 80%;
+            height: 1px;
+            margin: 20px auto;
+            background-color: #e4e4e4;
+        }
+
+        .email-body {
+            padding: 30px 20px;
+        }
+
+        .email-body h3 {
+            color: #555555;
+            margin-top: 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .email-body p {
+            line-height: 1.8;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .email-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .email-body table td {
+            padding: 12px 10px;
+            border: 1px solid #eaeaea;
+            font-size: 14px;
+            color: #555555;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 14px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 25px 0;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        .email-footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .email-footer a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .email-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .email-footer .social-icons {
+            margin: 10px 0;
+        }
+
+        .email-footer .social-icons a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #555555;
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .email-wrapper {
+                margin: 15px;
+            }
+
+            .email-header h1 {
+                font-size: 22px;
+            }
+
+            .email-body h3 {
+                font-size: 18px;
+            }
+
+            .cta-button {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-wrapper">
+        <!-- Email Header -->
+        <div class="email-header">
+            <img src="{{ logo_url }}" alt="Company Logo">
+            <h1>Welcome to {{ app_name }}</h1>
+        </div>
+
+        <!-- Email Body -->
+        <div class="email-body">
+            <h3>Hello {{ firstname }},</h3>
+            <p>
+                We're thrilled to have you join <strong>{{ app_name }}</strong>. Your {{ create_or_reset }} was
+                <strong>successfully completed</strong>. Here are your details:
+            </p>
+
+            <!-- User Details Table -->
+            <table>
+                <tr>
+                    <td><strong>Username:</strong></td>
+                    <td>{{ username }}</td>
+                </tr>
+                <tr>
+                    <td><strong>First Name:</strong></td>
+                    <td>{{ first_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Last Name:</strong></td>
+                    <td>{{ last_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>{{ email }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Country:</strong></td>
+                    <td>{{ country }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Timezone:</strong></td>
+                    <td>{{ timezone }}</td>
+                </tr>
+            </table>
+
+            <p>If you have any questions, contact us at <a href="mailto:harsh.stegowl@gmail.com">harsh.stegowl@gmail.com</a>.</p>
+            <p>Thank you for choosing {{ app_name }}!</p>
+        </div>
+
+        <!-- Email Footer -->
+        <div class="email-footer">
+            <p>&copy; {{ current_year }} {{ app_name }}. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#">Facebook</a> | <a href="#">Twitter</a> | <a href="#">LinkedIn</a>
+            </div>
+            <p>
+                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Basic Layout & Basic with Icons -->
+    <div class="row">
+        <div class="col-xxl">
+            <div class="card mb-6">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Add Album</h5>
+                </div>
+                <div class="card-body"> 
+                    <form method="post" action="{% url 'add_album' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Album Name Field -->
+                        <div class="row mb-6">
+                            <label class="col-sm-2 col-form-label">Album Name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i class="bx bx-album"></i></span>
+                                    {{ form.name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Album Image Field -->
+                        <div class="row mb-6">
+                            <label class="col-sm-2 col-form-label">Album Image</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i class="bx bxs-image"></i></span>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="mdi mdi-plus mdi-24px me-1 icon-animate-plus"></i>Add Album
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Error Messages -->
+                        {% if errors %}
+                        <br>
+                        <div class="alert alert-danger text-center">
+                            {{ errors }}
+                        </div>  
+                        {% endif %}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

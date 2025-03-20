@@ -1,0 +1,271 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block breadcrumbs %}{% endblock breadcrumbs %} {% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Display Django Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="card">
+      <form id="artistForm" action="{% url 'videos_frontend' %}" method="POST">
+        {% csrf_token %}
+       
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-header fs-5">Videos</h5>
+          <div>
+            <button
+              type="button"
+              class="btn btn-primary fs-5"
+              data-bs-toggle="modal" data-bs-target="#largeModal">
+              Assign Video(s)
+            </button>
+            &nbsp;&nbsp;
+            <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel3 dropdownMenuButton">Assign Videos</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                    
+                    <div class="modal-body">
+                      
+                      <div id="artistDropdown" class="dropdown">
+                        <button
+                          class="btn btn-secondary dropdown-toggle w-100"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          Select video category
+                        </button>
+                        <ul class="dropdown-menu w-100 p-3  " aria-labelledby="dropdownMenuButton">
+                          {% for video_cat_obj in videos_cats_obj %}
+                            <li>
+                              <div class="form-check" id="form-check-{{ video_cat_obj.id }}">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  name="videos_category"
+                                  value="{{ video_cat_obj.id }}"
+                                  id="artist{{ video_cat_obj.id }}">
+                                {% comment %} <label class="form-check-label" id="artist{{ artist.id }}" for="artist{{ artist.id }}">
+                                  {{ artist.name }}
+                                </label> {% endcomment %}
+                                <option>{{video_cat_obj.category_name}}</option>
+                              </div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                        <br>
+
+                      
+                    </div>
+            
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      &nbsp; <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <a href="{% url 'Videos_Add' %}" class="btn btn-primary fs-6" style="margin-right: 10px"
+              ><i class="mdi mdi-plus mdi-24px me-1 icon-animate-plus"></i>Add
+              Videos</a
+            >
+          </div>
+        </div>
+        <div class="table-responsive text-nowrap">
+          <table class="table table-striped table-responsive">
+            <thead class="table-dark table-responsive">
+              <tr>
+                <th scope="col">ID</th>
+                <th>Select Videos</th>
+                <th>Name</th>
+                <th scope="col">Image</th>
+                <th>url</th>
+                <th>Duration</th>
+                <th>Artist</th>
+                <th>description</th>
+                <th>created at</th>
+                <th>updated at</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0 table-responsive">
+              {% if videos %}
+                {% for video in videos %}
+              <tr>
+                <td>{{video.id}}</td>  
+                <td>
+                  <input
+                class="form-check-input"
+                type="checkbox"
+                name="video"
+                value="{{ video.id }}"
+                id="video{{ video.id }}">
+                </td>
+                <td>{{video.videos_name}}</td>
+                <td><img class="img-fluid img-thumbnail" style="width: 50px;" src="{{video.videos_image.url}}" alt=""></td>
+                <td>
+                  {% if video.videos_url %}
+                  <a
+                    href="{{ video.videos_url }}"
+                    target="_blank"
+                    class="btn btn-primary fs-6"
+                    ><i class="bx bx-play me-1"></i>Play</a
+                  >
+                  {% else %}
+                  <a
+                    href="{{video.videos_file.url}}"
+                    target="_blank"
+                    class="btn btn-primary fs-6"
+                    ><i class="bx bx-play me-1"></i>Play</a
+                  >
+                  {% endif %}
+                </td>
+                
+                <td>{{video.duration}}</td>
+                <td>{{video.videos_artist_name}}</td>
+                <td>{{video.videos_description}}</td>
+                <td>{{video.created_at}}</td>
+                <td>{{video.updated_at}}</td>
+                <td>
+                  <div class="dropdown">
+                    <button
+                      type="button"
+                      class="btn p-0 dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown"
+                    >
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item text-warning" href=""
+                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                      >
+                      <a
+                        class="dropdown-item text-danger"
+                        href="{% url "Videos_delete" video.id %}"
+                        onclick="return confirm('Are you sure you want to delete this video?');"
+                        ><i class="bx bx-trash me-1"></i> Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td colspan="10" class="text-center">No videos found</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          <!-- Styled Pagination Controls -->
+          {% comment %} <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              {% if admin_list.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                  <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="?page={{ admin_list.previous_page_number }}"
+                  aria-label="Previous"
+                >
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% endif %} {% for num in admin_list.paginator.page_range %} {% if
+              admin_list.number == num %}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ num }}</span>
+              </li>
+              {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endif %} {% endfor %} {% if admin_list.has_next %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="?page={{ admin_list.next_page_number }}"
+                  aria-label="Next"
+                >
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="?page={{ admin_list.paginator.num_pages }}"
+                  aria-label="Last"
+                >
+                  <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav> {% endcomment %}
+        </div>
+      </div>
+      <script>
+    
+
+
+
+
+
+        // Select elements
+        const dropdownButton = document.getElementById('dropdownMenuButton');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        const customDropdown = document.getElementById('artistDropdown');
+      
+        // Function to toggle dropdown visibility
+        function toggleDropdown() {
+          dropdownMenu.classList.toggle('show');
+          console.log("show")
+        }
+      
+        // Open dropdown when the button is clicked
+        dropdownButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent closing on button click
+          toggleDropdown(); // Toggle the dropdown visibility
+          console.log(".addEventListener")
+        });
+      
+        // Prevent dropdown from closing when clicking inside it
+        dropdownMenu.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent closing dropdown when clicking inside
+          console.log("event.stopPropagation")
+        });
+      
+        // Close the dropdown if clicking outside of the dropdown
+        document.addEventListener('click', function(event) {
+          if (!customDropdown.contains(event.target)) {
+            dropdownMenu.classList.remove('show'); // Close the dropdown
+            console.log("again show")
+          }
+        });
+      </script>
+      
+</div>
+</form>
+          
+
+{% endblock content %}
